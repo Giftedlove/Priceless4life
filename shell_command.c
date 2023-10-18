@@ -17,23 +17,23 @@ CommandType parse_command(char *command)
 
 	for (i = 0; command[i] != '\0'; i++) 
 	{
-	if (command[i] == '/')
-	return(EXTERNAL_COMMAND);
+		if (command[i] == '/')
+			return(EXTERNAL_COMMAND);
 	}
 
 	/* Check if the command is an internal command*/
 	for (i = 0; internal_commands[i] != NULL; i++) 
 	{
-	if (strcmp(command, internal_commands[i]) == 0)
-	return(INTERNAL_COMMAND);
+		if (strcmp(command, internal_commands[i]) == 0)
+			return(INTERNAL_COMMAND);
 	}
 
 	/* Check if the command is found in the PATH*/
 	path = check_path(command);
 	if (path != NULL)
 	{
-	free(path);
-        return(PATH_COMMAND);
+		free(path);
+		return(PATH_COMMAND);
 	}
 
 	return(INVALID_COMMAND);
@@ -48,41 +48,53 @@ CommandType parse_command(char *command)
  * @param command Command to be searched in the PATH
  * @return Path where the command is found, NULL if not found
  */
-char *check_path(char *command)
+char *check_path(char *command)	
 {
-	char *path = _getenv("PATH");
-	if (path == NULL || strlen(path) == 0)
-	return(NULL);
+	char *path;
+	char *path_copy;
+	char **path_tokens;
+	int i;
+	int len;
+	char *c = NULL;
 
-	char *path_copy = strdup(path);
-	if (path_copy == NULL)
+	if (path)
 	{
-	perror("Error: Unable to duplicate PATH");
-	return(NULL);
+		path = getenv("PATH");
+		len = strlen(command);
+		return(NULL);
+
+		path_copy = strdup(path);
+		if (path_copy == NULL)
+		{
+			perror("Error: Unable to duplicate PATH");
+			return(NULL);
+		}
+
+		path_tokens = tokenizer(path_copy, ":");
+
+		if (path_tokens == NULL)
+			return (NULL);
+
+		while (path_tokens != NULL)
+		{
+			i = strlen(path_tokens[i]);
+			c = malloc(len + i + 2);
+			strcpy(c, path_tokens[i]);
+			_strcat(c, "/");
+			_strcat(c, command);
+			_strcat(c, "\0");
+
+			if (access(c, F_OK) == 0)
+			{
+				free_string_array(path_tokens);
+				return(c);
+			}
+
+			free(c);
+		}
+
+		free_string_array(path_tokens);
 	}
-
-	char **path_tokens = tokenizer(path_copy, ":");
-	free(path_copy);
-
-	if (path_tokens == NULL)
-	return (NULL);
-
-	for (int i = 0; path_tokens[i] != NULL; i++)
-	{
-	char *temp2 = _strcat(path_tokens[i], "/");
-	char *temp = _strcat(temp2, command);
-	free(temp2);
-
-	if (access(temp, F_OK) == 0)
-	{
-	free_string_array(path_tokens);
-	return(temp);
-	}
-
-	free(temp);
-	}
-
-	free_string_array(path_tokens);
 	return(NULL);
 }
 
@@ -96,23 +108,20 @@ char *check_path(char *command)
  */
 void (*get_command_function(char *command))(char **)
 {
-	typedef struct
-	{
 	char *command_name;
-	void (*func)(char **);
-	}
-	CommandMapping;
+	size_t i;
+
 
 	CommandMapping mapping[] = 
 	{
-	("env", env);
-	("exit", quit);
-	}
+		("env", env);
+		("exit", quit);
+	};
 
-	for (size_t i = 0; i < sizeof(mapping) / sizeof(mapping[0]); i++)
+	for (i = 0; i < (sizeof(mapping)) / sizeof(mapping[0]); i++)
 	{
-	if (_strcmp(command, mapping[i].command_name) == 0)
-	return mapping[i].func;
+		if (string_cmpare(command, mapping[i]command_name) == 0)
+			return mapping[i].func;
 	}
 
 	return (NULL);
@@ -133,17 +142,17 @@ char *get_environment_variable(const char *name)
 
 	for (env_var = environ; *env_var != NULL; env_var++)
 	{
-	const char *pair = *env_var;
-	const char *name_cpy = name;
+		const char *pair = *env_var;
+		const char *name_cpy = name;
 
-	while (*pair == *name_cpy && *pair != '=')
-	{
-	pair++;
-	name_cpy++;
-	}
+		while (*pair == *name_cpy && *pair != '=')
+		{
+			pair++;
+			name_cpy++;
+		}
 
-	if (*pair == '=' && *name_cpy == '\0')
-	return (char *)(pair + 1);
+		if (*pair == '=' && *name_cpy == '\0')
+			return (char *)(pair + 1);
 	}
 
 	return(NULL);

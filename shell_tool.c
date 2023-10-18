@@ -84,13 +84,13 @@ void handle_non_interactive_mode(void)
 		command_type = parse_command(current_command[0]);
 
 		/* Initialize and execute the command*/
-		initializer(current_command, command_type);
+		initialize_execution(current_command, command_type);
 		free(current_command);
             }
 		free(commands);
         }
 	free(line);
-	exit(status);
+	exit(0);
     }
 }
 
