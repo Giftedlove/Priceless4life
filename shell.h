@@ -50,6 +50,10 @@
 	extern char *gifted;
 	extern int part;
 
+void command_execution(const char *enact);
+void print(const char *note);
+void prompt_display(void);
+void read_command(char *enact, size_t size);
 CommandType parse_command(char *command);
 char *check_path(char *command);
 void execute_command(char **tokenized_command, int command_type);
