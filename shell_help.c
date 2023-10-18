@@ -53,17 +53,17 @@ void *reallocate_memory(void *ptr, unsigned int old_size, unsigned int new_size)
 	else
 	{
 		new_block = malloc(new_size);
-	if (new_block != NULL)
-	{
-		for (i = 0; i < min(old_size, new_size); i++)
-			*((char *)new_block + i) = *((char *)ptr + i);
+		if (new_block != NULL)
+		{
+			for (i = 0; i < min(old_size, new_size); i++)
+				*((char *)new_block + i) = *((char *)ptr + i);
 			free(ptr);
-		return new_block;
-	}
-	else
-	{
-	return NULL;
-	}
+			return new_block;
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 }
 
@@ -83,11 +83,11 @@ int string_compare(const char *first, const char *second)
 	int i = 0;
 
 	while (first[i] != '\0')
-    {
+	{
 		if (first[i] != second[i])
-		break;
+			break;
 		i++;
-    }
+	}
 
 	return first[i] - second[i];
 }
@@ -107,25 +107,25 @@ void initialize_execution(char **current_command, int type_command)
 	pid_t child_pid;
 
 	if (type_command == EXTERNAL_COMMAND || type_command == PATH_COMMAND)
-    {
-	child_pid = fork();
+	{
+		child_pid = fork();
 
-	if (child_pid == 0)
-        {
-	/* Child process*/
-		execute_command(current_command, type_command);
-        }
+		if (child_pid == 0)
+		{
+			/* Child process*/
+			execute_command(current_command, type_command);
+		}
+		else
+		{
+			/* Parent process*/
+			waitpid(child_pid, &status, 0);
+			status >>= 8;
+		}
+	}
 	else
-        {
-	/* Parent process*/
-		waitpid(child_pid, &status, 0);
-		status >>= 8;
-        }
-    }
-	else
-    
+
 		execute_command(current_command, type_command);
-    }
+}
 }
 
 
@@ -142,35 +142,35 @@ void initialize_execution(char **current_command, int type_command)
 char **tokenizer(char *input_string, const char *delim)
 {
 	int num_tokens = 0;
-	char **tokens = NULL;
+	char *tokens[100];
 	char *token = NULL;
 	char *save_ptr = NULL;
+	int a = 0;
 
-	token = strtok_r(input_string, delim, &save_ptr);
+	token = strtok(delim, input_string);
 
-	while (token != NULL)
-    {
-	tokens = realloc(tokens, sizeof(*tokens) * (num_tokens + 1));
-	if (tokens == NULL)
-        {
-		perror("Error: Unable to allocate memory");
-		exit(EXIT_FAILURE);
-        }
+	while (input_string[num_tokens] != '\0')
+	{
+		if (strchr(delim, input_string[num_tokens])
+				num_tokens++;
+				a++;
+				}
+				tokens = malloc(sizeof(*tokens) * (a + 1));
+				if (tokens == NULL)
+                                 {
+                                perror("Error: Unable to allocate memory");
+				exit(EXIT_FAILURE);
+				}
+				while (token != NULL)
+				{
 
-	tokens[num_tokens] = token;
-	token = strtok_r(NULL, delim, &save_ptr);
-	num_tokens++;
-    }
+				tokens[num_tokens] = token;
+				num_tokens++;
+				token = strtok(NULL, delim);
+				}
 
-	tokens = realloc(tokens, sizeof(*tokens) * (num_tokens + 1));
-	if (tokens == NULL)
-    {
-	perror("Error: Unable to allocate memory");
-	exit(EXIT_FAILURE);
-    }
+				tokens[num_tokens] = NULL;
 
-	tokens[num_tokens] = NULL;
-
-	return tokens;
+				return tokens;
 }
 

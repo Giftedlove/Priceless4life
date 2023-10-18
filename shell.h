@@ -13,6 +13,9 @@
 #include <errno.h>
 #include <dirent.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <ctype.h>
+
 
 /**
  *struct map - a struct that maps a command name to a function

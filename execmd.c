@@ -1,3 +1,5 @@
+#include "shell.h"
+
 int input_execcmd(char **input)
 {
 	pid_t pid;
@@ -19,5 +21,6 @@ int input_execcmd(char **input)
 		wait(NULL);
 		return(0);
 	}
+	return(0);
 
 }
