@@ -61,7 +61,7 @@ void handle_non_interactive_mode(void)
 
 	/* Check if stdin is not a terminal (e.g., piped input)*/
 	if (!(isatty(STDIN_FILENO)))
-    {
+	{
 	while (getline(&line, &n, stdin) != -1)
 	{
 		/* Remove newline characters and comments from the input line*/
@@ -78,7 +78,7 @@ void handle_non_interactive_mode(void)
 		{
 		free(current_command);
 		break;
-                }
+	}
 
 		/*Determine the type of command (e.g., built-in, external)*/
 		command_type = parse_command(current_command[0]);
@@ -86,7 +86,7 @@ void handle_non_interactive_mode(void)
 		/* Initialize and execute the command*/
 		initialize_execution(current_command, command_type);
 		free(current_command);
-            }
+	}
 		free(commands);
         }
 	free(line);

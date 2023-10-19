@@ -3,8 +3,8 @@
 /**
  * @brief Executes a command based on its type
  *
- * execute_command - This function executes a command based on its type using execve
- * or internal functions.
+ * execute_command - This function executes a command based on its type using
+ * execve or internal functions.
  *
  * @param tokenized_command Tokenized form of the command
  * @param command_type Type of the command
@@ -35,7 +35,7 @@ void execute_command(char **tokenized_command, int command_type)
 
 	default:
 	/*Unknown command type*/
- 		break;
+		break;
 	}
 }
 
@@ -58,7 +58,9 @@ void execute_external_command(char **tokenized_command)
  */
 void execute_command_with_path(char **tokenized_command)
 {
-	char *path = check_path(tokenized_command[0]);
+	char *path;
+
+	 *path = check_path(tokenized_command[0]);
 	if (path == NULL)
 	{
 		perror(get_enviroment_variable("PWD"));

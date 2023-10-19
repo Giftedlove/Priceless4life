@@ -6,7 +6,8 @@
  * This function analyzes the command to determine its type.
  *
  * @param command Command to be parsed
- * @return Type of the command (EXTERNAL_COMMAND, INTERNAL_COMMAND, PATH_COMMAND, or INVALID_COMMAND)
+ * Return Type of the command
+ * (EXTERNAL_COMMAND, INTERNAL_COMMAND, PATH_COMMAND, or INVALID_COMMAND)
  */
 
 CommandType parse_command(char *command)
@@ -15,17 +16,17 @@ CommandType parse_command(char *command)
 	char *internal_commands[] = {"env", "exit", NULL};
 	char *path = NULL;
 
-	for (i = 0; command[i] != '\0'; i++) 
+	for (i = 0; command[i] != '\0'; i++)
 	{
 		if (command[i] == '/')
-			return(EXTERNAL_COMMAND);
+			return (EXTERNAL_COMMAND);
 	}
 
 	/* Check if the command is an internal command*/
-	for (i = 0; internal_commands[i] != NULL; i++) 
+	for (i = 0; internal_commands[i] != NULL; i++)
 	{
-		if (strcmp(command, internal_commands[i]) == 0)
-			return(INTERNAL_COMMAND);
+		if (string_compare(command, internal_commands[i]) == 0)
+			return (INTERNAL_COMMAND);
 	}
 
 	/* Check if the command is found in the PATH*/
@@ -33,22 +34,23 @@ CommandType parse_command(char *command)
 	if (path != NULL)
 	{
 		free(path);
-		return(PATH_COMMAND);
+		return (PATH_COMMAND);
 	}
 
-	return(INVALID_COMMAND);
+	return (INVALID_COMMAND);
 }
 
 
 /**
  * @brief Checks if a command is found in the PATH
  *
- * This function checks if the command is found in any of the directories in the PATH.
+ * This function checks if the command is found
+ * in any of the directories in the PATH.
  *
  * @param command Command to be searched in the PATH
  * @return Path where the command is found, NULL if not found
  */
-char *check_path(char *command)	
+char *check_path(char *command)
 {
 	char *path;
 	char *path_copy;
@@ -61,13 +63,13 @@ char *check_path(char *command)
 	{
 		path = getenv("PATH");
 		len = strlen(command);
-		return(NULL);
+		return (NULL);
 
 		path_copy = strdup(path);
 		if (path_copy == NULL)
 		{
 			perror("Error: Unable to duplicate PATH");
-			return(NULL);
+			return (NULL);
 		}
 
 		path_tokens = tokenizer(path_copy, ":");
@@ -87,7 +89,7 @@ char *check_path(char *command)
 			if (access(c, F_OK) == 0)
 			{
 				free_string_array(path_tokens);
-				return(c);
+				return (c);
 			}
 
 			free(c);
@@ -95,7 +97,7 @@ char *check_path(char *command)
 
 		free_string_array(path_tokens);
 	}
-	return(NULL);
+	return (NULL);
 }
 
 /**
@@ -112,16 +114,15 @@ void (*get_command_function(char *command))(char **)
 	size_t i;
 
 
-	CommandMapping mapping[] = 
-	{
+	CommandMapping mapping[] = {
 		("env", env);
 		("exit", quit);
 	};
 
 	for (i = 0; i < (sizeof(mapping)) / sizeof(mapping[0]); i++)
 	{
-		if (string_cmpare(command, mapping[i]command_name) == 0)
-			return mapping[i].func;
+		if (string_compare(command, mapping[i]command_name) == 0)
+			return ((mapping[i].func;));
 	}
 
 	return (NULL);
@@ -152,8 +153,8 @@ char *get_environment_variable(const char *name)
 		}
 
 		if (*pair == '=' && *name_cpy == '\0')
-			return (char *)(pair + 1);
+			return ((char *)(pair + 1));
 	}
 
-	return(NULL);
+	return (NULL);
 }

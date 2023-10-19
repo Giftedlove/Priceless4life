@@ -3,7 +3,8 @@
 /**
  * @brief Prints a string to a specified stream
  *
- * This function writes the given string to the specified stream (e.g., STDOUT_FILENO).
+ * This function writes the given string to the specified stream
+ * (e.g., STDOUT_FILENO).
  *
  * @param string String to be printed
  * @param stream Stream to print out to (e.g., STDOUT_FILENO)
@@ -39,16 +40,16 @@ void *reallocate_memory(void *ptr, unsigned int old_size, unsigned int new_size)
 	if (ptr == NULL)
 	{
 		new_block = malloc(new_size);
-		return(new_block);
+		return (new_block);
 	}
 	else if (new_size == old_size)
 	{
-		return(ptr);
+		return (ptr);
 	}
 	else if (new_size == 0 && ptr != NULL)
 	{
 		free(ptr);
-		return(NULL);
+		return (NULL);
 	}
 	else
 	{
@@ -58,11 +59,11 @@ void *reallocate_memory(void *ptr, unsigned int old_size, unsigned int new_size)
 			for (i = 0; i < min(old_size, new_size); i++)
 				*((char *)new_block + i) = *((char *)ptr + i);
 			free(ptr);
-			return new_block;
+			return (new_block);
 		}
 		else
 		{
-			return NULL;
+			return (NULL);
 		}
 	}
 }
@@ -89,18 +90,20 @@ int string_compare(const char *first, const char *second)
 		i++;
 	}
 
-	return first[i] - second[i];
+	return (first[i] - second[i]);
 }
 
 
 /**
  * @brief Initializes command execution based on its type
  *
- * This function decides how to execute the given command based on its type.
+ * This function decides how to execute
+ * the given command based on its type.
  *
  * @param current_command The command to be executed
- * @param type_command Type of the command (EXTERNAL_COMMAND, PATH_COMMAND, INTERNAL_COMMAND)
- * @return void
+ * @param type_command Type of the command
+ * (EXTERNAL_COMMAND, PATH_COMMAND, INTERNAL_COMMAND)
+ * @return: void
  */
 void initialize_execution(char **current_command, int type_command)
 {
@@ -128,49 +131,4 @@ void initialize_execution(char **current_command, int type_command)
 }
 }
 
-
-/**
- * @brief Tokenizes input string using a specified delimiter
- *
- * This function tokenizes the input string using the provided delimiter
- * and stores the tokens in an array.
- *
- * @param input_string Input string to be parsed
- * @param delim Delimiter to be used (a single character string)
- * @return Array of tokens
- */
-char **tokenizer(char *input_string, const char *delim)
-{
-	int num_tokens = 0;
-	char *tokens[100];
-	char *token = NULL;
-	char *save_ptr = NULL;
-	int a = 0;
-
-	token = strtok(delim, input_string);
-
-	while (input_string[num_tokens] != '\0')
-	{
-		if (strchr(delim, input_string[num_tokens])
-				num_tokens++;
-				a++;
-				}
-				tokens = malloc(sizeof(*tokens) * (a + 1));
-				if (tokens == NULL)
-                                 {
-                                perror("Error: Unable to allocate memory");
-				exit(EXIT_FAILURE);
-				}
-				while (token != NULL)
-				{
-
-				tokens[num_tokens] = token;
-				num_tokens++;
-				token = strtok(NULL, delim);
-				}
-
-				tokens[num_tokens] = NULL;
-
-				return tokens;
-}
 

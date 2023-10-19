@@ -8,29 +8,31 @@
 
 char *strdup(const char *s)
 {
-    size_t len = strlen(s) + 1;
-    char *p = malloc(len);
-    if (p != NULL)
-        memcpy(p, s, len);
-    return p;
+	size_t len = strlen(s) + 1;
+	char *p = malloc(len);
+
+	if (p != NULL)
+	memcpy(p, s, len);
+	return (p);
 }
 
 /**
- * free_string_array - function to free memory allocated for an array of strings
+ * free_string_array - function to free memory allocated for an array
+ * of strings
  *
  */
 
 void free_string_array(char **arr)
 {
-    if (arr == NULL)
-        return;
+	if (arr == NULL)
+	return (0);
 
-    for (int i = 0; arr[i] != NULL; i++)
-    {
-        free(arr[i]);
-    }
+	for (int i = 0; arr[i] != NULL; i++)
+	{
+	free(arr[i]);
+	}
 
-    free(arr);
+	free(arr);
 }
 
 

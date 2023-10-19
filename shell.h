@@ -42,10 +42,10 @@
 } CommandType;
 
 	typedef struct
-    {
-        char *command_name;
-        void (*func)(char **);
-    } CommandMapping;
+	{
+	char *command_name;
+	void (*func)(char **);
+	}	CommandMapping;
 
 	extern char **environ;
 	extern char *alx;
@@ -66,7 +66,8 @@ void handle_invalid_command(char **tokenized_command);
 void (*get_command_function(char *command))(char **);
 char *get_environment_variable(const char *name);
 void print_string(char *string, int stream);
-void *reallocate_memory(void *ptr, unsigned int old_size, unsigned int new_size);
+void *reallocate_memory
+(void *ptr, unsigned int old_size, unsigned int new_size);
 int string_compare(const char *first, const char *second);
 void initialize_execution(char **current_command, int type_command);
 char **tokenizer(char *input_string, const char *delim);
